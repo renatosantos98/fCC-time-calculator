@@ -26,7 +26,7 @@ def add_time(start, duration, day=None):
         end_minutes = end_minutes - 60
     # Format end minutes for display. If minutes are less than 10, add a '0' before the number.
     if end_minutes < 10:
-        end_minutes = "0" + str("end_minutes")
+        end_minutes = "0" + str(end_minutes)
 
     # Calculate the hours of the end time.
     end_hours = (start_hours + duration_hours) % 12
@@ -49,22 +49,28 @@ def add_time(start, duration, day=None):
         am_pm = am_pm_flip[am_pm]
 
     # Format the string to be returned.
-    new_time = str(end_hours) + ":" + str(end_minutes) + "" + am_pm
+    new_time = str(end_hours) + ":" + str(end_minutes) + " " + am_pm
 
     if day is not None:
         # Initialise list of days of the week.
         days_of_the_week_array = [
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-            "sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
         ]
-        day = day.strip().lower()
+        day = day.strip().capitalize()
         # Find the position of the starting day of the week on the array and cycle through it to find the end day.
         day_end_index = (days_of_the_week_array.index(day) + days_passed) % 7
         day_end = days_of_the_week_array[day_end_index]
+        new_time += ", " + day_end
+
+    if days_passed == 1:
+        new_time += " " + "(next day)"
+    elif days_passed > 1:
+        new_time += " (" + str(days_passed) + " days later)"
 
     return new_time
